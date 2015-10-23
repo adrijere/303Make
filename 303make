@@ -1,0 +1,63 @@
+#!/usr/bin/env python2.7
+# -*- coding: utf-8 -*-
+
+import sys
+from math import *
+
+separe = ":"
+guys = {}
+
+def     parsing_file(_file):
+   for line in _file:
+      if (line.find(separe) != -1):
+         line = line.replace(separe, "")
+         tmp = line.split(" ")
+         cpt = 0
+         last_name = ""
+         for line in tmp:
+            if (cpt == 0):
+               cpt = cpt + 1
+               last_name = line
+               guys[last_name] = []
+            elif (line.find("\n") != -1):
+               tmp = line[:line.rfind('\'')]
+               guys[tmp] = []
+               guys[last_name].append(line[:line.rfind('\'')])
+               cpt = 0
+            else:
+               guys[line] = []
+               guys[last_name].append(line)
+
+def     print_matr_adj():
+   tab = [[]]
+   cpt = 0
+   for x in sorted(guys.keys()):
+      tab.append([])
+      for x2 in sorted(guys.keys()):
+         if ((x2 in guys[x]) == True):
+            tab[cpt].append('1')
+         else:
+            tab[cpt].append('0')
+      print '[' + ' '.join(tab[cpt]) + ']'
+      cpt = cpt + 1
+   print
+
+def     main():
+   try:
+      file = open(sys.argv[1])
+      tmp = file.readlines()
+      parsing_file(tmp)
+   except:
+      print "argument not valid"
+      return 84
+   _len = len(sys.argv)
+   if (_len == 2):
+      print_matr_adj()
+      return 0
+   else:
+      print "argument not valid"
+      return 84
+
+if __name__ == '__main__':
+   sys.exit(main())
+
